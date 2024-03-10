@@ -19,40 +19,53 @@ app.post("/upload", upload.single("file"), validateCSVFile, (req, res) => {
 			houses[houseAddress] = true;
 		})
 		.on("end", () => {
-      console.log(houses)
+			console.log(houses);
 			const uniqueHouses = Object.keys(houses).length;
-			res.json({ uniqueHouses });
+			res.status(200).json({ uniqueHouses });
 		});
 });
 
 function standardizeAddress(address: string): string {
 	const tokens = address.toLowerCase().split(/\b\s+\b/);
-  // Follow this guide to normalize address https://www.placekey.io/blog/how-to-standardize-address-data
-	const directions = ["north", "west", "east", "south", "n", "w", "e", "s", "n.", "w.", "e.", "s."];
-  const streetSuffixes: { [key: string]: string } = {
-    'st.': 'street',
-    'st': 'street',
-    'ave.': 'avenue',
-    'ave': 'avenue',
-    'rd.': 'road',
-    'rd': 'road',
-    'blvd.': 'boulevard',
-    'blvd': 'boulevard',
-    'dr.': 'drive',
-    'dr': 'drive',
-    'ln.': 'lane',
-    'ln': 'lane',
-    'ct.': 'court',
-    'ct': 'court',
-    'pl.': 'place',
-    'pl': 'place',
-    'sq.': 'square',
-    'sq': 'square',
-    'ter.': 'terrace',
-    'ter': 'terrace',
-    'pkwy.': 'parkway',
-    'pkwy': 'parkway',
-  };
+	// Follow this guide to normalize address https://www.placekey.io/blog/how-to-standardize-address-data
+	const directions = [
+		"north",
+		"west",
+		"east",
+		"south",
+		"n",
+		"w",
+		"e",
+		"s",
+		"n.",
+		"w.",
+		"e.",
+		"s.",
+	];
+	const streetSuffixes: { [key: string]: string } = {
+		"st.": "street",
+		st: "street",
+		"ave.": "avenue",
+		ave: "avenue",
+		"rd.": "road",
+		rd: "road",
+		"blvd.": "boulevard",
+		blvd: "boulevard",
+		"dr.": "drive",
+		dr: "drive",
+		"ln.": "lane",
+		ln: "lane",
+		"ct.": "court",
+		ct: "court",
+		"pl.": "place",
+		pl: "place",
+		"sq.": "square",
+		sq: "square",
+		"ter.": "terrace",
+		ter: "terrace",
+		"pkwy.": "parkway",
+		pkwy: "parkway",
+	};
 	const standardizedTokens = tokens.map((token) => {
 		if (streetSuffixes[token]) return streetSuffixes[token];
 		if (directions.includes(token)) return "";
@@ -75,3 +88,5 @@ function validateCSVFile(req: Request, res: Response, next: Function) {
 app.listen(port, () => {
 	console.log(`Server running at http://localhost:${port}`);
 });
+
+export default app;
