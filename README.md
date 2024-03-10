@@ -18,7 +18,7 @@ This is a Node.js application built with Express.js that provides an API endpoin
 2. Navigate to the project directory:
 
 ```bash
-cd csv-upload
+cd house_api
 ```
 3. Install dependencies:
 
