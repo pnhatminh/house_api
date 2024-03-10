@@ -1,5 +1,4 @@
 import request from "supertest";
-import fs from "fs";
 import app from "./index";
 
 describe("POST /upload", () => {
@@ -23,5 +22,13 @@ describe("POST /upload", () => {
 			.attach("file", "./tests/valid_file.csv");
 		expect(res.status).toEqual(200);
 		expect(res.body).toEqual({ uniqueHouses: 3 });
+	});
+	
+  it("should return uniqueHouses: 0 if an empty CSV file is uploaded", async () => {
+		const res = await request(app)
+			.post("/upload")
+			.attach("file", "./tests/empty_file.csv");
+		expect(res.status).toEqual(200);
+		expect(res.body).toEqual({ uniqueHouses: 0 });
 	});
 });

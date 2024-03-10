@@ -13,9 +13,9 @@ app.post("/upload", upload.single("file"), validateCSVFile, (req, res) => {
 
 	fs.createReadStream(req.file!.path)
 		.pipe(csvParser())
-		.on("data", (data) => {
+		.on("data", (data: { houseId?: string, houseAddress?: string; }) => {
 			if (!Object.keys(data).length) return;
-			const houseAddress = standardizeAddress(data.houseAddress);
+			const houseAddress = standardizeAddress(data.houseAddress!);
 			houses[houseAddress] = true;
 		})
 		.on("end", () => {
